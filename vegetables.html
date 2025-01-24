@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fresh Picks</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding-bottom: 60px;
+        }
+
+        .veg-card {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            max-width: 200px;
+        }
+
+        .veg-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            padding: 30px 10px;
+        }
+
+        .veg-card-body {
+            padding: 15px;
+            text-align: center;
+        }
+
+        .veg-card-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #28a745;
+        }
+
+        .veg-card-price,
+        .veg-card-quantity {
+            font-size: 1rem;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .veg-card button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 5px;
+            width: 100%;
+        }
+
+        .veg-card button.added {
+            background-color: #6c757d;
+        }
+
+        .veg-count-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .veg-count-container button {
+            padding: 5px 8px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            border-radius: 5px;
+            background-color: gray;
+            color: white;
+            border: none;
+        }
+
+        .veg-count-container span {
+            font-size: 1rem;
+            margin: 0 10px;
+        }
+
+        #goToCart {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            font-size: 1.2rem;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        #filterContainer {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #filterContainer select, #searchInput {
+            padding: 5px 10px;
+            font-size: 1rem;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        #filterContainer select {
+            width: 200px;
+        }
+
+        #searchInput {
+            width: 300px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-success">
+        <div class="container-fluid">
+            <a class="navbar-brand text-white" href="index.html">GreenMart</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item mx-3"><a class="nav-link text-white" href="index2.html">Home</a></li>
+                    <li class="nav-item mx-3"><a class="nav-link text-white" href="vegetables.html">Vegetables</a></li>
+                    <li class="nav-item mx-3"><a class="nav-link text-white" href="login.html">Login</a></li>
+                    <li class="nav-item mx-3">
+                        <a class="nav-link text-white" href="help.html"><i class="fas fa-phone"></i></a>
+                    </li>
+                    <li class="nav-item mx-3"><a class="nav-link" href="cart.html" style="color: white;"><i class="fas fa-shopping-cart"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-5">
+        <div id="filterContainer">
+            <h2>Fresh Organic Picks</h2>
+            <div class="d-flex">
+                <select id="filter">
+                    <option value="all">All</option>
+                    <option value="vegetable">Vegetables</option>
+                    <option value="fruit">Fruits</option>
+                </select>
+                <input type="text" id="searchInput" placeholder="Search...">
+            </div>
+        </div>
+        <div class="row row-cols-1 row-cols-md-5 g-4" id="vegetablesContainer"></div>
+    </div>
+
+    <button id="goToCart" onclick="window.location.href='cart.html'">Go to Cart</button>
+
+    <script>
+        const products = [
+    { name: 'Carrot', price: 40, quantity: 100, type: 'vegetable', image: 'carrot.jpg' },
+    { name: 'Tomato', price: 35, quantity: 120, type: 'vegetable', image: 'tomato1.jpeg' },
+    { name: 'Onion', price: 30, quantity: 150, type: 'vegetable', image: 'onion.jpeg' },
+    { name: 'Apple', price: 50, quantity: 150, type: 'fruit', image: 'apple.jpg' },
+    { name: 'Beetroot', price: 120, quantity: 100, type: 'vegetable', image: 'beetroot.jpg' },
+    { name: 'Coriander', price: 15, quantity: 140, type: 'vegetable', image: 'coriander.jpeg' },
+    { name: 'Drumstick', price: 40, quantity: 110, type: 'vegetable', image: 'drumstick.webp' },
+    { name: 'Pumpkin', price: 30, quantity: 60, type: 'vegetable', image: 'pumpkin.jpeg' },
+    { name: 'Bitter Gourd', price: 60, quantity: 50, type: 'vegetable', image: 'bittergourd.jpeg' },
+    { name: 'Bottle Gourd', price: 70, quantity: 40, type: 'vegetable', image: 'bottlegourd.jpg' },
+    { name: 'Ladyfinger', price: 80, quantity: 90, type: 'vegetable', image: 'ladyfinger.jpeg' },
+    { name: 'Capsicum', price: 45, quantity: 70, type: 'vegetable', image: 'capsicum.jpeg' },
+    { name: 'Brinjal', price: 65, quantity: 65, type: 'vegetable', image: 'brinjal.jpeg' },
+    { name: 'Peas', price: 50, quantity: 85, type: 'vegetable', image: 'peas.webp' },
+    { name: 'Banana', price: 30, quantity: 100, type: 'fruit', image: 'banana.jpg' },
+    { name: 'Mango', price: 50, quantity: 80, type: 'fruit', image: 'mango.jpg' },
+    { name: 'Guava', price: 25, quantity: 40, type: 'fruit', image: 'guava.jpg' },
+    { name: 'Zucchini', price: 35, quantity: 95, type: 'vegetable', image: 'zuchini.jpeg' },
+    { name: 'Radish', price: 20, quantity: 120, type: 'vegetable', image: 'radish.jpeg' },
+    { name: 'Sweet Corn', price: 25, quantity: 150, type: 'vegetable', image: 'sweetcorn.jpeg' },
+    { name: 'Muskmelon', price: 70, quantity: 50, type: 'fruit', image: 'muskmelon.jpg' },
+    { name: 'Watermelon', price: 60, quantity: 60, type: 'fruit', image: 'watermelon.jpg' },
+    { name: 'Grapes', price: 40, quantity: 80, type: 'fruit', image: 'grapes.jpg' },
+    { name: 'Spinach', price: 25, quantity: 130, type: 'vegetable', image: 'spinach.jpeg' },
+    { name: 'Cabbage', price: 40, quantity: 100, type: 'vegetable', image: 'cabbage.jpg' },
+    { name: 'Cauliflower', price: 50, quantity: 80, type: 'vegetable', image: 'cauliflower.jpeg' },
+    { name: 'Potato', price: 25, quantity: 200, type: 'vegetable', image: 'potato.webp' },
+    { name: 'Beans', price: 45, quantity: 90, type: 'vegetable', image: 'beans.jpeg' },
+    { name: 'Pineapple', price: 100, quantity: 50, type: 'fruit', image: 'pineapple.jpg' },
+    { name: 'Orange', price: 35, quantity: 60, type: 'fruit', image: 'orange.jpg' }
+]; 
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn')) || false;
+
+        function saveCart() {
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+
+        function renderProducts(filter = 'all', searchTerm = '') {
+            const container = document.getElementById('vegetablesContainer');
+            container.innerHTML = '';
+
+            const filteredProducts = products.filter(product => {
+                const matchesFilter = filter === 'all' || product.type === filter;
+                const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
+                return matchesFilter && matchesSearch;
+            });
+
+            filteredProducts.forEach(product => {
+                const productInCart = cart.find(item => item.name === product.name);
+                const productCard = document.createElement('div');
+                productCard.classList.add('col');
+
+                productCard.innerHTML = `
+                    <div class="veg-card">
+                        <img src="${product.image}" alt="${product.name}">
+                        <div class="veg-card-body">
+                            <h5 class="veg-card-title">${product.name}</h5>
+                            <p class="veg-card-price">₹${product.price}</p>
+                            <p class="veg-card-quantity">Available: ${product.quantity} kgs</p>
+                            ${productInCart ? `
+
+                                <div class="veg-count-container">
+                                    <button class="decrease-count">-</button>
+                                    <span class="veg-count">${productInCart.count}</span>
+                                    <button class="increase-count">+</button>
+                                </div>` : `
+
+                                <button class="add-to-cart">Add to Cart</button>`}
+                        </div>
+                    </div>
+                `;
+
+                container.appendChild(productCard);
+            });
+
+            attachEventListeners();
+        }
+
+        function attachEventListeners() {
+            document.querySelectorAll('.add-to-cart').forEach(button => {
+                button.addEventListener('click', function () {
+                    if (!isLoggedIn) {
+                        alert('Please log in to add items to the cart.');
+                        return;
+                    }
+
+                    const parent = this.closest('.veg-card-body');
+                    const productName = parent.querySelector('.veg-card-title').innerText;
+                    const product = products.find(item => item.name === productName);
+
+                    if (product.quantity > 0) {
+                        const productInCart = cart.find(item => item.name === productName);
+
+                        if (productInCart) {
+                            productInCart.count++;
+                        } else {
+                            cart.push({ name: productName, count: 1 });
+                        }
+
+                        product.quantity--;
+                        saveCart();
+                        renderProducts(document.getElementById('filter').value);
+                    } else {
+                        alert('Sorry, this product is out of stock.');
+                    }
+                });
+            });
+
+            document.querySelectorAll('.decrease-count').forEach(button => {
+                button.addEventListener('click', function () {
+                    const parent = this.closest('.veg-card-body');
+                    const productName = parent.querySelector('.veg-card-title').innerText;
+                    const product = products.find(item => item.name === productName);
+                    const productIndex = cart.findIndex(item => item.name === productName);
+
+                    if (cart[productIndex].count > 1) {
+                        cart[productIndex].count--;
+                        product.quantity++;
+                    } else {
+                        cart.splice(productIndex, 1);
+                        product.quantity++;
+                    }
+
+                    saveCart();
+                    renderProducts(document.getElementById('filter').value);
+                });
+            });
+
+            document.querySelectorAll('.increase-count').forEach(button => {
+                button.addEventListener('click', function () {
+                    const parent = this.closest('.veg-card-body');
+                    const productName = parent.querySelector('.veg-card-title').innerText;
+                    const product = products.find(item => item.name === productName);
+                    const productInCart = cart.find(item => item.name === productName);
+
+                    if (product.quantity > 0) {
+                        productInCart.count++;
+                        product.quantity--;
+                        saveCart();
+                        renderProducts(document.getElementById('filter').value);
+                    } else {
+                        alert('Sorry, no more stock available.');
+                    }
+                });
+            });
+
+            document.getElementById('filter').addEventListener('change', function () {
+                renderProducts(this.value, document.getElementById('searchInput').value);
+            });
+
+            document.getElementById('searchInput').addEventListener('input', function () {
+                renderProducts(document.getElementById('filter').value, this.value);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => renderProducts());
+    </script>
+</body>
+</html>
